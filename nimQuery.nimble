@@ -5,4 +5,3 @@ description     = "Simple wrapper for jQuery"
 license         = "MIT"
 
 # Dependencies
-requires "dom"
