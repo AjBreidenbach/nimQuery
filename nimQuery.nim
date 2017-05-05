@@ -1,7 +1,7 @@
 import dom
 
 type
-  jQEvent* = ref object
+  JEvent* = ref object
     altKey*{.importc.}: bool
     bubbles*{.importc.}: bool
     button*{.importc.}: cint
@@ -15,22 +15,19 @@ type
     delegateTarget* {.importc.}: Element
     detail* {.importc.}: cint
     eventPhase* {.importc.}: cint
-    #???isDefaultPrevented* {.importc.}: cint
     key* {.importc.}: cstring
     keyCode* {.importc.}: cint
     metaKey* {.importc.}: cstring
     offsetX* {.importc.}: cint
     offsetY* {.importc.}: cint
-    #handleObj: obj
     originalEvent*: Event
-    #?namespace* {.importc.}: cstring
     pageX* {.importc.}: cint
     pageY* {.importc.}: cint
     pointerId* {.importc.}: cint
     pointerType* {.importc.}: cstring
     relatedTarget* {.importc.}: Element
     target* {.importc.}: Element
-    targetTouches* {.importc.}: cstring #???
+    targetTouches* {.importc.}: cstring
     timeStamp* {.importc.}: cint
     toElement* {.importc.}: Element
     view* {.importc.}: Window
@@ -41,6 +38,8 @@ type
 {.push importcpp.}
 # jQuery functions
 proc jQuery(w: Window = window, sel: cstring): Element
+proc jQuery(w: Window = window, element: Element): Element
+proc jQuery(w: Window = window, document: Document): Element
 proc getVal(w: Window = window, element: Element): cstring
 proc getHtml(w: Window = window, element: Element): cstring
 proc getText(w: Window = window, element: Element): cstring
@@ -52,9 +51,15 @@ proc append(w: Window = window, element: Element, val: cstring)
 proc prepend(w: Window = window, element: Element, val: cstring)
 proc remove(w: Window = window, element: Element, cls: cstring)
 proc toggleClass(w: Window = window, element: Element, cls: cstring)
+proc width(w: Window = window, element: Element): cint
+proc height(w: Window = window, element: Element): cint
+proc innerWidth(w: Window = window, element: Element): cint
+proc innerHeight(w: Window = window, element: Element): cint
+proc outerWidth(w: Window = window, element: Element): cint
+proc outerHeight(w: Window = window, element: Element): cint
 
 # ajax
-proc load(w: Window = window, element, u ,fname :cstring)
+proc load(w: Window = window, element: Element, u ,fname :cstring)
 proc get(w: Window = window,  u, fname :cstring)
 proc post(w: Window = window, u, d, fname: cstring)
 
@@ -85,11 +90,44 @@ proc select(w: Window = window, element: Element, fname: cstring)
 proc submit(w: Window = window, element: Element, fname: cstring)
 proc trigger(w: Window = window, element: Element, fname: cstring)
 proc triggerHandler(w: Window = window, element: Element, fname: cstring)
+
+proc click(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc blur(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc change(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc dblclick(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc focus(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc focusin(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc focusout(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc hover(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc keydown(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc keypress(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc keyup(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc mousedown(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc mouseenter(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc mouseleave(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc mousemove(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc mouseout(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc mouseup(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc off(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc on(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc ready(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc resize(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc scroll(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc select(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc submit(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc trigger(w: Window = window, element: Element, callback: proc(e: JEvent))
+proc triggerHandler(w: Window = window, element: Element, callback: proc(e: JEvent))
 {.pop.}
 
 #  wrappers
 proc jQuery*(s: cstring): Element =
   jQuery(sel = s)
+  
+proc jQuery*(e: Element): Element =
+  jQuery(element = e)
+  
+proc jQuery*(d: Document): Element =
+  jQuery(document = d)
 
 proc getVal*(e: Element): cstring =
   getVal(element = e)
@@ -124,14 +162,31 @@ proc empty*(e: Element) =
 proc toggleClass*(e: Element, c: cstring = "") =
   toggleClass(element = e, cls = c)
 
+proc width*(e: Element):cint =
+  width(element = e)
 
-proc load(s, url:cstring; callback: cstring ="") =
-  load(element =s, u = url, fname = callback)
+proc height*(e: Element):cint =
+  height(element = e)
 
-proc get(url: cstring; callback: cstring ="") =
+proc innerWidth*(e: Element):cint =
+  innerWidth(element = e)
+
+proc innerHeight*(e: Element):cint =
+  innerHeight(element = e)
+
+proc outerWidth*(e: Element):cint =
+  outerWidth(element = e)
+
+proc outerHeight*(e: Element):cint =
+  outerHeight(element = e)
+
+proc load*(e: Element, url:cstring; callback: cstring ="") =
+  load(element = e, u = url, fname = callback)
+
+proc get*(url: cstring; callback: cstring ="") =
   get(u = url, fname = callback)
 
-proc post(url: cstring; data, callback:cstring= "") =
+proc post*(url: cstring; data, callback:cstring= "") =
   post(u = url, d = data, fname = callback)
 
 # event handler wrappers
@@ -213,3 +268,80 @@ proc trigger*(e: Element, f: cstring) =
 proc triggerHandler*(e: Element, f: cstring) =
   triggerHandler(element = e, fname = f)
 
+proc click*(e: Element, c: proc(e: JEvent)) =
+  click(element = e, callback = c)
+
+proc blur*(e: Element, c: proc(e: JEvent)) =
+  blur(element = e, callback =c)
+
+proc change*(e: Element, c: proc(e: JEvent)) =
+  change(element = e, callback =c)
+
+proc dblclick*(e: Element, c: proc(e: JEvent)) =
+  dblclick(element = e, callback =c)
+
+proc focus*(e: Element, c: proc(e: JEvent)) =
+  focus(element = e, callback =c)
+
+proc focusin*(e: Element, c: proc(e: JEvent)) =
+  focusin(element = e, callback =c)
+
+proc focusout*(e: Element, c: proc(e: JEvent)) =
+  focusout(element = e, callback =c)
+
+proc hover*(e: Element, c: proc(e: JEvent)) =
+  hover(element = e, callback =c)
+
+proc keydown*(e: Element, c: proc(e: JEvent)) =
+  keydown(element = e, callback =c)
+
+proc keypress*(e: Element, c: proc(e: JEvent)) =
+  keypress(element = e, callback =c)
+
+proc keyup*(e: Element, c: proc(e: JEvent)) =
+  keyup(element = e, callback =c)
+
+proc mousedown*(e: Element, c: proc(e: JEvent)) =
+  mousedown(element = e, callback =c)
+
+proc mouseenter*(e: Element, c: proc(e: JEvent)) =
+  mouseenter(element = e, callback =c)
+
+proc mouseleave*(e: Element, c: proc(e: JEvent)) =
+  mouseleave(element = e, callback =c)
+
+proc mousemove*(e: Element, c: proc(e: JEvent)) =
+  mousemove(element = e, callback =c)
+
+proc mouseout*(e: Element, c: proc(e: JEvent)) =
+  mouseout(element = e, callback =c)
+
+proc mouseup*(e: Element, c: proc(e: JEvent)) =
+  mouseup(element = e, callback =c)
+
+proc off*(e: Element, c: proc(e: JEvent)) =
+  off(element = e, callback =c)
+
+proc on*(e: Element, c: proc(e: JEvent)) =
+  on(element = e, callback =c)
+
+proc ready*(e: Element, c: proc(e: JEvent)) =
+  ready(element = e, callback =c)
+
+proc resize*(e: Element, c: proc(e: JEvent)) =
+  resize(element = e, callback =c)
+
+proc scroll*(e: Element, c: proc(e: JEvent)) =
+  scroll(element = e, callback =c)
+
+proc select*(e: Element, c: proc(e: JEvent)) =
+  select(element = e, callback =c)
+
+proc submit*(e: Element, c: proc(e: JEvent)) =
+  submit(element = e, callback =c)
+
+proc trigger*(e: Element, c: proc(e: JEvent)) =
+  trigger(element = e, callback =c)
+
+proc triggerHandler*(e: Element, c: proc(e: JEvent)) =
+  triggerHandler(element = e, callback =c)

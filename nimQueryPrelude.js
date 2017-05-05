@@ -31,7 +31,7 @@ prepend = function(element, value){
 }
 
 remove = function(element, cls) {
-    $(element.remove(cls))
+    element.remove(cls)
 }
 
 empty = function(element) {
@@ -76,21 +76,26 @@ outerHeight = function(element) {
 
 // data and callback are optional
 load = function(element, url, data, fname) {
-    element.load(url, data, fname)
+    element.load(url, data, window[fname])
 }
 
 // cb optional
 get = function(url, fname) {
-    $.get(url, fname)
+    $.get(url, window[fname])
 }
 
 // cb optional, data
 post = function(url, data, fname) {
-    $.get(url, fname)
+    $.get(url, window[fname])
 }
 
 click = function(element, fname) {
-    element.click(window[fname])
+    if (typeof fname === "function"){
+        element.click(fname)
+    }
+    else{
+        element.click(window[fname])
+    }
 }
 
 blur = function(element, fname) {
@@ -195,4 +200,50 @@ trigger = function(element, fname) {
 
 triggerHandler = function(element, fname) {
     element.triggerHandler(window[fname])
+}
+
+
+hide = function(element, speed, fname){
+    element.hide(speed, window[fname])
+}
+
+show = function(element, speed, fname){
+    element.show(speed, window[fname])
+}
+
+toggle = function(element, speed, fname){
+    element.toggle(speed, window[fname])
+}
+
+fadeIn = function(element, speed, fname){
+    element.fadeIn(speed, window[fname])
+}
+
+
+fadeOut = function(element, speed, fname){
+    element.fadeOut(speed, window[fname])
+}
+
+
+fadeToggle = function(element, speed, fname){
+    element.fadeToggle(speed, window[fname])
+}
+
+
+fadeTo = function(element, speed, opacity, fname){
+    element.toggle(speed, opacity, window[fname])
+}
+
+slideUp = function(element, speed, fname){
+    element.slideUp(speed, window[fname])
+}
+
+
+slideDown = function(element, speed, fname){
+    element.slideDown(speed, window[fname])
+}
+
+
+slideToggle = function(element, speed, fname){
+    element.slideToggle(speed, window[fname])
 }
