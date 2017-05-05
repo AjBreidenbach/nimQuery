@@ -11,7 +11,12 @@ getText = function(selector){
 }
 
 setVal = function(selector, value){
-    $(selector).val(value)
+    if (typeof selector === "object"){
+        selector.val(value)
+    }
+    else {
+        $(selector).val(value)
+    }
 }
 
 setHtml = function(selector, value){
@@ -75,124 +80,124 @@ outerHeight = function(selector) {
 }
 
 // data and callback are optional
-load = function(selector, url, data, callback) {
-    $(selector).load(url, data, callback)
+load = function(selector, url, data, fname) {
+    $(selector).load(url, data, fname)
 }
 
 // cb optional
-get = function(url, callback) {
-    $.get(url, callback)
+get = function(url, fname) {
+    $.get(url, fname)
 }
 
 // cb optional, data
-post = function(url, data, callback) {
-    $.get(url, callback)
+post = function(url, data, fname) {
+    $.get(url, fname)
 }
 
-click = function(selector, callback) {
-    $(selector).click(callback(e))
+click = function(selector, fname) {
+    $(selector).click(window[fname])
 }
 
-blur = function(selector, callback) {
-    $(selector).blur(callback(e))
+blur = function(selector, fname) {
+    $(selector).blur(window[fname])
 }
 
-change = function(selector, callback) {
-    $(selector).change(callback(e))
+change = function(selector, fname) {
+    $(selector).change(window[fname])
 }
 
-dblclick = function(selector, callback) {
-    $(selector).dblclick(callback(e))
+dblclick = function(selector, fname) {
+    $(selector).dblclick(window[fname])
 }
 
-focus = function(selector, callback) {
-    $(selector).focus(callback(e))
+focus = function(selector, fname) {
+    $(selector).focus(window[fname])
 }
 
-focusin = function(selector, callback) {
-    $(selector).focusin(callback(e))
+focusin = function(selector, fname) {
+    $(selector).focusin(window[fname])
 }
 
-focusout = function(selector, callback) {
-    $(selector).focusout(callback(e))
+focusout = function(selector, fname) {
+    $(selector).focusout(window[fname])
 }
 
-hover = function(selector, callback) {
-    $(selector).hover(callback(e))
+hover = function(selector, fname) {
+    $(selector).hover(window[fname])
 }
 
-keydown = function(selector, callback) {
-    $(selector).keydown(callback(e))
+keydown = function(selector, fname) {
+    $(selector).keydown(window[fname])
 }
 
-keypress = function(selector, callback) {
-    $(selector).keypress(callback(e))
+keypress = function(selector, fname) {
+    $(selector).keypress(window[fname])
 }
 
-keyup = function(selector, callback) {
-    $(selector).keyup(callback(e))
+keyup = function(selector, fname) {
+    $(selector).keyup(window[fname])
 }
 
-mousedown = function(selector, callback) {
-    $(selector).mousedown(callback(e))
+mousedown = function(selector, fname) {
+    $(selector).mousedown(window[fname])
 }
 
-mouseenter = function(selector, callback) {
-    $(selector).mouseenter(callback(e))
+mouseenter = function(selector, fname) {
+    $(selector).mouseenter(window[fname])
 }
 
-mouseleave = function(selector, callback) {
-    $(selector).mouseleave(callback(e))
+mouseleave = function(selector, fname) {
+    $(selector).mouseleave(window[fname])
 }
 
-mousemove = function(selector, callback) {
-    $(selector).mousemove(callback(e))
+mousemove = function(selector, fname) {
+    $(selector).mousemove(window[fname])
 }
 
-mouseout = function(selector, callback) {
-    $(selector).mouseout(callback(e))
+mouseout = function(selector, fname) {
+    $(selector).mouseout(window[fname])
 }
 
-mouseover = function(selector, callback) {
-    $(selector).mouseover(callback(e))
+mouseover = function(selector, fname) {
+    $(selector).mouseover(window[fname])
 }
 
-mouseup = function(selector, callback) {
-    $(selector).mouseup(callback(e))
+mouseup = function(selector, fname) {
+    $(selector).mouseup(window[fname])
 }
 
-off = function(selector, callback) {
-    $(selector).off(callback(e))
+off = function(selector, fname) {
+    $(selector).off(window[fname])
 }
 
-on = function(selector, callback) {
-    $(selector).on(callback(e))
+on = function(selector, fname) {
+    $(selector).on(window[fname])
 }
 
-ready = function(selector, callback) {
-    $(selector).ready(callback(e))
+ready = function(selector, fname) {
+    $(selector).ready(window[fname])
 }
 
-resize = function(selector, callback) {
-    $(selector).resize(callback(e))
+resize = function(selector, fname) {
+    $(selector).resize(window[fname])
 }
 
-scroll = function(selector, callback) {
-    $(selector).scroll(callback(e))
+scroll = function(selector, fname) {
+    $(selector).scroll(window[fname])
 }
 
-select = function(selector, callback) {
-    $(selector).select(callback(e))
+select = function(selector, fname) {
+    $(selector).select(window[fname])
 }
 
-submit = function(selector, callback) {
-    $(selector).submit(callback(e))
+submit = function(selector, fname) {
+    $(selector).submit(window[fname])
 }
 
-trigger = function(selector, callback) {
-    $(selector).trigger(callback(e))
+trigger = function(selector, fname) {
+    $(selector).trigger(window[fname])
 }
 
-triggerHandler = function(selector, callback) {
-    $(selector).triggerHandler(callback(e))
+triggerHandler = function(selector, fname) {
+    $(selector).triggerHandler(window[fname])
 }
