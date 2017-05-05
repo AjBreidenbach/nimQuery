@@ -1,4 +1,4 @@
-import jWrap, dom
+import nimquery, nimqueryergo, dom
 
 proc onLoad() {.exportc.} =
   jQuery("p").setVal("5")
