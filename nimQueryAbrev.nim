@@ -12,6 +12,12 @@ proc n*(d: Document): Element =
 proc getVal*(s: cstring): cstring =
   getVal(jQuery(s))
 
+proc getValInt*(s: cstring): cint =
+  getValInt(jQuery(s))
+
+proc getInt*(s: cstring): cint =
+  getValInt(jQuery(s))
+
 proc getHtml*(s: cstring): cstring =
   getHtml(jQuery(s))
 

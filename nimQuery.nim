@@ -41,10 +41,12 @@ proc jQuery(w: Window = window, sel: cstring): Element
 proc jQuery(w: Window = window, element: Element): Element
 proc jQuery(w: Window = window, document: Document): Element
 proc getVal(w: Window = window, element: Element): cstring
+proc getValInt(w: Window = window, element: Element): cint
 proc getHtml(w: Window = window, element: Element): cstring
 proc getText(w: Window = window, element: Element): cstring
 proc empty(w: Window = window, element: Element)
 proc setVal(w: Window = window, element: Element, val: cstring)
+proc setVal(w: Window = window, element: Element, val: cint)
 proc setHtml(w: Window = window, element: Element, val: cstring)
 proc setText(w: Window = window, element: Element, val: cstring)
 proc append(w: Window = window, element: Element, val: cstring)
@@ -132,6 +134,12 @@ proc jQuery*(d: Document): Element =
 proc getVal*(e: Element): cstring =
   getVal(element = e)
 
+proc getValInt*(e: Element): cint =
+  getValInt(element = e)
+
+proc getInt*(e: Element): cint =
+  getValInt(element = e)
+
 proc getHtml*(e: Element): cstring =
   getHtml(element = e)
 
@@ -139,6 +147,9 @@ proc getText*(e: Element): cstring =
   getText(element = e)
   
 proc setVal*(e: Element, v: cstring) =
+  setVal(element = e, val = v)
+
+proc setVal*(e: Element, v: cint) =
   setVal(element = e, val = v)
 
 proc setText*(e: Element, v: cstring) =

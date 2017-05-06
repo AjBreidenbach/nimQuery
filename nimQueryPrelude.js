@@ -1,6 +1,7 @@
-getVal = function(element){
+getValInt = getVal = function(element){
     return element.val();
 }
+
 
 getHtml = function(element){
     return element.html();
