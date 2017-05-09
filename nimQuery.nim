@@ -40,11 +40,14 @@ proc exec(w: Window = window, fname:cstring)
 proc eval(w: Window = window, script:cstring)
 proc natlog(w: Window = window, element: Element)
 
+proc doNothing*(response, status, xhr: cstring)
+
 # bug fixes
 proc add(w: Window = window, n1, n2: cint): cint
 proc sub(w: Window = window, n1, n2: cint): cint
 
 # jQuery functions
+proc jQuery*(w: Window = window): Element
 proc jQuery(w: Window = window, selector: cstring): Element
 proc jQuery(w: Window = window, element: Element): Element
 proc jQuery(w: Window = window, document: Document): Element
@@ -92,9 +95,9 @@ proc prevUntil*(element: Element, selector: cstring): Element
 
 
 # ajax
-proc load*(element: Element, url , data: cstring ="", complete: proc (response, status, xhr: cstring))
-proc get(w: Window = window, u, d: cstring, s: proc(data, status, xhr: cstring))
-proc post(w: Window = window, u, d: cstring, c: proc(response, status, xhr: cstring))
+proc load*(element: Element, url , data: cstring ="", complete: proc (response, status, xhr: cstring) = doNothing)
+proc get*(element: Element, url, data: cstring = "", complete: proc (response, status, xhr:cstring) = doNothing)
+proc post*(element: Element, url, data: cstring = "", success: proc (response, status, xhr:cstring) = doNothing)
 
 # event handlers
 proc click*(element: Element, handler: proc(e: JEvent))
@@ -136,10 +139,21 @@ proc sub* (number1, number2: cint): cint = sub(n1 = number1, n2 = number2)
 proc jQuery*(s: cstring): Element = jQuery(selector = s)
 proc jQuery*(e: Element): Element = jQuery(element = e)
 proc jQuery*(d: Document): Element = jQuery(document = d)
-proc get*(url, data: cstring, success: proc(data, status, xhr: cstring)) = get(url, data, success)
-proc post*(url, data: cstring, complete: proc(data, status, xhr: cstring)) = post(url, data, complete)
+#proc get*(url, data: cstring = "", success: proc(data, status, xhr: cstring)) = get(url, data, success)
+proc post*(url, data: cstring = "", complete: proc(data, status, xhr: cstring) = doNothing) = post(url, data, complete)
 proc valInt*(element: Element): cint = valInt(e = element)
 proc ths*(e: JEvent): Element = jQuery(e.currentTarget)
 proc exec*(function:cstring) = exec(fname = function)
 proc eval*(js:cstring) = eval(script = js)
 proc natlog*(e: Element) = natlog(element = e)
+
+const prelude ="""
+doNothing = function(something, something2, something3) {}
+exec = function(fname){window[fname]()}
+natlog = function(element) {console.log(element)}
+add = function(n1, n2) {return (n1/1 + n2/1)}
+sub = function(n1, n2) {return (n1/1 - n2/1)}
+valInt = function(element){return element.val()} 
+"""
+
+eval(prelude)
